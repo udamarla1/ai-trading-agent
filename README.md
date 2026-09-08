@@ -21,6 +21,21 @@ Start the agent:
 make run
 ```
 
+## UI (Streamlit)
+
+Quick demo UI (Streamlit):
+
+```bash
+source .venv/bin/activate
+streamlit run ui.py
+```
+
+Deploy on Railway: add the `web` start command in Railway to match `Procfile`:
+
+```
+web: streamlit run ui.py --server.port $PORT --server.address 0.0.0.0
+```
+
 ## Tests
 Run tests with:
 

@@ -1,8 +1,23 @@
-import os
 import sys
 import logging
-from dotenv import load_dotenv
 from alpaca.trading.client import TradingClient
+from .config import API_KEY, SECRET_KEY
+
+
+# Lazy client singleton
+_client = None
+
+
+def get_client():
+    """Return a cached TradingClient instance, creating it if needed."""
+    global _client
+    if _client is None:
+        api_key = API_KEY
+        secret_key = SECRET_KEY
+        if not api_key or not secret_key:
+            raise RuntimeError("ALPACA_API_KEY or ALPACA_SECRET_KEY not set")
+        _client = TradingClient(api_key, secret_key, paper=True)
+    return _client
 
 
 def main():
@@ -11,17 +26,15 @@ def main():
     This checks environment variables and avoids printing secrets.
     Copy `.env.example` to `.env` and fill in your keys before running.
     """
-    load_dotenv()
-
-    api_key = os.getenv("ALPACA_API_KEY")
-    secret_key = os.getenv("ALPACA_SECRET_KEY")
+    api_key = API_KEY
+    secret_key = SECRET_KEY
 
     if not api_key or not secret_key:
         print("ALPACA_API_KEY or ALPACA_SECRET_KEY not set. Copy .env.example to .env and add your keys.")
         sys.exit(1)
 
     try:
-        client = TradingClient(api_key, secret_key, paper=True)
+        client = get_client()
         account = client.get_account()
     except Exception as e:
         logging.exception("Failed to initialize Alpaca client or fetch account")
