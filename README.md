@@ -2,6 +2,9 @@
 
 Simple AI trading agent scaffolded for development.
 
+[![Live on Railway](https://img.shields.io/badge/deploy-railway-blue?logo=railway)](https://ai-trading-agent-production-48a0.up.railway.app/)
+
+
 ## Prerequisites
 - Python 3.10+ recommended
 
