@@ -48,7 +48,6 @@ jobs:
   deploy:
     needs: test-and-build
     runs-on: ubuntu-latest
-    if: ${{ secrets.RAILWAY_API_KEY != '' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -59,6 +58,7 @@ jobs:
           export PATH="$HOME/.railway/bin:$PATH"
 
       - name: Deploy to Railway
+        if: ${{ secrets.RAILWAY_API_KEY != '' }}
         env:
           RAILWAY_API_KEY: ${{ secrets.RAILWAY_API_KEY }}
         run: |
